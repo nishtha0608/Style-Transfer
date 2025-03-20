@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Style Transfer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+    h1 {
+      color: #333;
+    }
+    .upload-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    input[type="file"] {
+      margin: 10px 0;
+    }
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+    .result-container img {
+      max-width: 30%;
+      margin: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Neural Style Transfer</h1>
+  <div class="upload-container">
+    <form id="upload-form" enctype="multipart/form-data">
+      <label for="content-image">Upload Content Image:</label>
+      <input type="file" id="content-image" name="content-image" accept="image/*" required><br>
+      <label for="style-image">Upload Style Image:</label>
+      <input type="file" id="style-image" name="style-image" accept="image/*" required><br>
+      <button type="submit">Generate Stylized Image</button>
+    </form>
+  </div>
+  <div class="result-container" id="result-container">
+    <!-- Results will be displayed here -->
+  </div>
+  <script>
+    document.getElementById('upload-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('content-image', document.getElementById('content-image').files[0]);
+      formData.append('style-image', document.getElementById('style-image').files[0]);
+
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+      const resultContainer = document.getElementById('result-container');
+      resultContainer.innerHTML = `
+        <img src="${result.content_image}" alt="Content Image">
+        <img src="${result.style_image}" alt="Style Image">
+        <img src="${result.stylized_image}" alt="Stylized Image">
+      `;
+    });
+  </script>
+</body>
+</html>
