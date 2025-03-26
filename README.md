@@ -89,5 +89,5 @@ Ensure you have the following installed before running the project:
 This project is open-source and available under the **MIT License**.
 
 ## Author
-Developed by **[Your Name]**
+Developed by **Nishtha Arora**
 
